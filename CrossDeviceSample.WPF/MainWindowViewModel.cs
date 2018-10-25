@@ -63,10 +63,12 @@ namespace CrossDeviceSample.WPF
 
         private void Connection_RequestReceived(AppServiceConnection sender, AppServiceRequestReceivedEventArgs args)
         {
+            var d = args.GetDeferral();
             if (args.Request.Message.TryGetValue("message", out var x))
             {
                 ReceivedMessage = $"{x}";
             }
+            d.Complete();
         }
     }
 }

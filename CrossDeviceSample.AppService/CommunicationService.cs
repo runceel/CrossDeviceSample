@@ -35,7 +35,7 @@ namespace CrossDeviceSample.AppService
             else
             {
                 var d = taskInstance.GetDeferral();
-                taskInstance.Canceled += WpfTaskInstance_Canceled;
+                taskInstance.Canceled += GraphTaskInstance_Canceled;
                 var con = details.AppServiceConnection;
                 con.RequestReceived += GraphAppConnection_RequestReceived;
 

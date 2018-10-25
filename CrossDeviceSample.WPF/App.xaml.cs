@@ -18,7 +18,7 @@ namespace CrossDeviceSample.WPF
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            Debug.WriteLine($"Desktop app's FamilyName: {Package.Current.Id.FamilyName}")
+            Debug.WriteLine($"Desktop app's FamilyName: {Package.Current.Id.FamilyName}");
             MainWindow = new MainWindow();
             ((MainWindowViewModel)MainWindow.DataContext).ReceivedMessage = ParseArgs(e.Args);
             MainWindow.Show();
