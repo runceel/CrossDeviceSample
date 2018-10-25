@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows;
+using Windows.ApplicationModel;
 
 namespace CrossDeviceSample.WPF
 {
@@ -16,6 +18,7 @@ namespace CrossDeviceSample.WPF
     {
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            Debug.WriteLine($"Desktop app's FamilyName: {Package.Current.Id.FamilyName}")
             MainWindow = new MainWindow();
             ((MainWindowViewModel)MainWindow.DataContext).ReceivedMessage = ParseArgs(e.Args);
             MainWindow.Show();

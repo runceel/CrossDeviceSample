@@ -73,7 +73,7 @@ namespace CrossDeviceSample.UWP
                 Window.Current.Activate();
             }
 
-            Debug.WriteLine(Package.Current.Id.FamilyName);
+            Debug.WriteLine($"UWP app's FamilyName: {Package.Current.Id.FamilyName}")
         }
 
         /// <summary>
