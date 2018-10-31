@@ -1,37 +1,37 @@
 # README
 
-## ������
+## 試し方
 
-CrossDeviceSample �v���W�F�N�g�� CrossDeviceSample.UWP �v���W�F�N�g���f�o�b�O���s����B
-Visual Studio �̏o�̓E�B���h�E�� Family Name �̃��O���o��̂ōT����B
+CrossDeviceSample プロジェクトと CrossDeviceSample.UWP プロジェクトをデバッグ実行する。
+Visual Studio の出力ウィンドウに Family Name のログが出るので控える。
 
-### CrossDeviceSample.AppService �v���W�F�N�g�̕ҏW
+### CrossDeviceSample.AppService プロジェクトの編集
 
-`CommunicationService.cs` �� `ClientFamilyName` �̒l�� Desktop app's family name �̒l�ɂ���B
+`CommunicationService.cs` の `ClientFamilyName` の値を Desktop app's family name の値にする。
 
-### CrossDeviceSample.WPF �v���W�F�N�g�̕ҏW
+### CrossDeviceSample.WPF プロジェクトの編集
 
-`Consts.cs` �� `CommunicationServiceHost` �̒l�� UWP app's family name �̒l�ɂ���B 
+`Consts.cs` の `CommunicationServiceHost` の値を UWP app's family name の値にする。 
 
 
 
-## Microsoft Graph explorer ���J��
+## Microsoft Graph explorer を開く
 https://developer.microsoft.com/ja-jp/graph/graph-explorer
 
-PC �ɕR�Â��Ă���}�C�N���\�t�g�A�J�E���g�ŃT�C���C�����Ĉȉ��̃A�N�Z�X���Ƀ`�F�b�N�����čēx�T�C���C������B
+PC に紐づいているマイクロソフトアカウントでサインインして以下のアクセス許可にチェックを入れて再度サインインする。
 
 ```
 Device.Read
 Device.Command
 ```
 
-### �f�o�C�X�� ID ���擾����
+### デバイスの ID を取得する
 
-GET �� `https://graph.microsoft.com/beta/me/devices` ��@���ƃf�o�C�X�̃��X�g���o�Ă���̂� PC �� ID ���T���Ă����B
+GET で `https://graph.microsoft.com/beta/me/devices` を叩くとデバイスのリストが出てくるので PC の ID を控えておく。
 
-### �A�v���̋N��
+### アプリの起動
 
-POST �� `https://graph.microsoft.com/beta/me/devices/��قǎ擾�����f�o�C�X��ID/command` �ɑ΂��ėv���{���Ɉȉ��� JSON ���w�肵�ċN������ƃA�v�����N������B
+POST で `https://graph.microsoft.com/beta/me/devices/先ほど取得したデバイスのID/commands` に対して要求本文に以下の JSON を指定して起動するとアプリが起動する。
 
 ```json
 {
@@ -42,9 +42,9 @@ POST �� `https://graph.microsoft.com/beta/me/devices/��قǎ擾�����f�o�C�X��ID/
 }
 ```
 
-### �R�}���h�̑��M
+### コマンドの送信
 
-�A�v�����N��������v���{�����ȉ��̒l�ɕύX���邱�ƂŃA�v���̃e�L�X�g���X�V�ł���B
+アプリが起動したら要求本文を以下の値に変更することでアプリのテキストを更新できる。
 
 ```json
 {
@@ -55,23 +55,23 @@ POST �� `https://graph.microsoft.com/beta/me/devices/��قǎ擾�����f�o�C�X��ID/
 }
 ```
 
-## �d�g��
+## 仕組み
 
-Microsoft Graph API �� Cross-device experience �Ƃ��� API ���g�����Ƃ� Microsoft Graph API(REST API) �o�R�œ����}�C�N���\�t�g�A�J�E���g�ɕR�Â��Ă���f�o�C�X�ɑ΂��đ��삪�ł���B
-����A�A�v���̋N�����A�v���T�[�r�X�ɑ΂��ăR�}���h�𑗂邱�Ƃ��o���܂��B�����ł̓R�}���h�𑗂������ʂ͎󂯂Ă܂��񂪃|�X�g�o�b�N URL �Ȃǂ��w��ł���̂ŋ��炭�󂯎���͂��B
+Microsoft Graph API の Cross-device experience という API を使うことで Microsoft Graph API(REST API) 経由で同じマイクロソフトアカウントに紐づいているデバイスに対して操作ができる。
+現状、アプリの起動をアプリサービスに対してコマンドを送ることが出来ます。ここではコマンドを送った結果は受けてませんがポストバック URL なども指定できるので恐らく受け取れるはず。
 
-### �A�v���̋N���ɂ���
+### アプリの起動について
 
-UWP �A�v���i�܂� Dekstop Bridge�j�̓v���g�R���ɑΉ��o���܂��B
-�����I�ɂ̓v���g�R���ɑΉ����Ă���A�v���͑S�� Microsoft Graph API ����N�����邱�Ƃ��o���܂��B
+UWP アプリ（含む Dekstop Bridge）はプロトコルに対応出来ます。
+原理的にはプロトコルに対応しているアプリは全て Microsoft Graph API から起動することが出来ます。
 
-����� WPF �A�v���� Desktop Bridge ���g���� UWP �����ăv���g�R���Ή��ɂ��ċN���ł���悤�ɂ��܂����B
+今回は WPF アプリを Desktop Bridge を使って UWP 化してプロトコル対応にして起動できるようにしました。
 
-### �R�}���h�̑��M�ɂ���
+### コマンドの送信について
 
-�R�}���h�ւ̑Ή��́ADesktop Bridge �A�v���P�i�ł͂Ȃ� App Service �������� UWP �A�v����ʂɍ쐬���Ă��܂��B
-Microsoft Graph API ����̓����[�g�A�N�Z�X�������Ă��� App Service �ɑ΂��ăR�}���h�𑗂邱�Ƃ��o���܂��B����́AWPF �A�v���̋N������ UWP �A�v���� App Service �ɐڑ����ɂ����ĉ�����҂��Ă��܂��B
+コマンドへの対応は、Desktop Bridge アプリ単品ではなく App Service を持った UWP アプリを別に作成しています。
+Microsoft Graph API からはリモートアクセスを許可している App Service に対してコマンドを送ることが出来ます。今回は、WPF アプリの起動時に UWP アプリの App Service に接続しにいって応答を待っています。
 
-App Service �� Graph API �o�R�ŃR�}���h��������A�����ڑ����Ȃ����Ă��� WPF �A�v���ɑ΂��ē]�����Ă��܂��B
-�]�����ꂽ���b�Z�[�W�����Ƃ� WPF �A�v���ł͉�ʂ̃e�L�X�g���X�V���Ă��܂��B
+App Service に Graph API 経由でコマンドが来たら、それを接続がつながっている WPF アプリに対して転送しています。
+転送されたメッセージをもとに WPF アプリでは画面のテキストを更新しています。
 
